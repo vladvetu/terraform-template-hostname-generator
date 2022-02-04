@@ -27,26 +27,42 @@ variable "servers" {
   EOT
 }
 
-variable "random_id" {
+variable "append_unique" {
   type = bool
 
   default = true
 
   description = <<-EOT
-    Use random generated ID in server name.
+    Append unique identifier to names.
     If `false`, numbers used as server ID.
   EOT
 }
 
-variable "random_id_length" {
-  type = number
+variable "external_random" {
+  type = bool
 
-  default = 5
+  default = false
 
   description = <<-EOT
-    Generates random value as server ID.
-    If `false` numbered ID used.
+    Use external random for server name.
+    If `false`, a new random will be generated as server ID.
   EOT
+}
+
+
+variable "external_random_id" {
+  type = string
+
+  description = <<-EOT
+    Provide external random to be used.
+    Used in conjunction with `external_random true`
+  EOT
+}
+
+variable random_id_length {
+  type        = number
+  default     = 3
+  description = "description"
 }
 
 variable "number_id_format" {
@@ -56,6 +72,6 @@ variable "number_id_format" {
 
   description = <<-EOT
     Format of numbered server's id.
-    Ignored when `random-id` is `true`
+    Server instance will prepend wathever random used.
   EOT
 }

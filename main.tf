@@ -8,7 +8,6 @@ terraform {
 }
 
 resource "random_id" "id" {
-  count       = var.random_id ? var.servers : 0
   byte_length = var.random_id_length
 }
 
@@ -17,8 +16,8 @@ data "template_file" "name" {
   template = "$${prefix}-$${id}"
 
   vars = {
-    prefix = lower(var.prefix)
-    id     = var.random_id ? random_id.id[count.index].hex : format(var.number_id_format, count.index + 1)
+    prefix        = lower(var.prefix)
+    id            = lower(var.append_unique ? "${format(var.number_id_format, count.index + 1)}-${var.external_random ? var.external_random_id : random_id.id.hex}" : format(var.number_id_format, count.index + 1))
   }
 }
 
